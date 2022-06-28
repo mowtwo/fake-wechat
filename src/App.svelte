@@ -154,7 +154,7 @@
     background-color: rgb(237, 237, 237);
     transform-origin: top center;
     font-size: 24px;
-    font-family: "pfcn";
+    font-family: "pfcn", "system-ui", "-apple-system";
     .ios_status_bar {
       display: flex;
       align-items: center;
@@ -169,9 +169,10 @@
       margin-left: 62px;
       display: flex;
       align-items: center;
+      font-size: 32px;
       span {
         vertical-align: top;
-        font-size: 20px;
+        font-size: 26px;
         margin: 0 1px;
       }
       .time-select {
