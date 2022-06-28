@@ -13,6 +13,24 @@
   let signalType = "4G";
   const signalTypes = ["5G", "4G", "3G", "E", "H", "无信号"];
 
+  let energy = 100;
+  const energyColorMap = {
+    normal: "#0a0a0a",
+    low: "#ff4b4b",
+    protected: "#f9d24f",
+    charge: "#5cd063",
+  };
+  let batteryType = "normal";
+  let batteryTypes = ["normal", "protected", "charge"];
+  $: energyColor =
+    batteryType === "charge"
+      ? energyColorMap.charge
+      : batteryType === "protected"
+      ? energyColorMap.protected
+      : energy <= 20
+      ? energyColorMap.low
+      : energyColorMap.normal;
+
   onMount(() => {
     const dt = new Date();
     deviceTimeValue = `${padZero(dt.getHours(), 2)}:${padZero(
@@ -84,6 +102,36 @@
             <label for="signalType"> 信号类型 </label>
             <select id="signalType" bind:value={signalType}>
               {#each signalTypes as type (type)}
+                <option value={type}>{type}</option>
+              {/each}
+            </select>
+          </div>
+        </Hover>
+      </div>
+      <div class="electric">
+        <Hover>
+          <div class="battery">
+            <div class="wrapper">
+              <div
+                class="value"
+                style="width: {energy}%; background-color: {energyColor};"
+              />
+            </div>
+            <div class="dot" />
+          </div>
+          <div class="progress" slot="tools">
+            <label for="battery">电量</label>
+            <input
+              type="range"
+              step="1"
+              min="0"
+              max="100"
+              id="battery"
+              bind:value={energy}
+            />
+            <label for="batteryType">状态</label>
+            <select id="batteryType" bind:value={batteryType}>
+              {#each batteryTypes as type (type)}
                 <option value={type}>{type}</option>
               {/each}
             </select>
@@ -169,6 +217,39 @@
         background-color: #010101;
         &.weak {
           background-color: #bdbdbd;
+        }
+      }
+    }
+    .electric {
+      position: relative;
+      .dot {
+        position: absolute;
+        overflow: hidden;
+        right: -4px;
+        top: 8.5px;
+        width: 3px;
+        &::before {
+          content: "";
+          display: block;
+          width: 9px;
+          height: 9px;
+          border-radius: 6px;
+          background-color: #8b8b8b;
+          margin-left: -6px;
+        }
+      }
+      .battery {
+        display: inline-block;
+        padding: 2px;
+        border-radius: 6px;
+        border: #8b8b8b solid 2px;
+        .wrapper {
+          width: 40px;
+          .value {
+            height: 18px;
+            background-color: #000000;
+            border-radius: 4px;
+          }
         }
       }
     }
