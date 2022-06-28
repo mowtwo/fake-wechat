@@ -1,0 +1,176 @@
+<script lang="ts">
+  import { onMount } from "svelte";
+
+  import Hover from "./lib/hover.svelte";
+  import padZero from "./util/pad-zero";
+
+  let deviceTimeValue = "19:00";
+  $: deviceTime = deviceTimeValue.split(":");
+
+  let signalMainValue = 4;
+  let signalSubValue = 4;
+
+  let signalType = "4G";
+  const signalTypes = ["5G", "4G", "3G", "E", "H", "无信号"];
+
+  onMount(() => {
+    const dt = new Date();
+    deviceTimeValue = `${padZero(dt.getHours(), 2)}:${padZero(
+      dt.getMinutes(),
+      2
+    )}`;
+  });
+</script>
+
+<div class="wechat">
+  <div class="ios_status_bar">
+    <div class="time">
+      <Hover>
+        {padZero(deviceTime[0] ?? 0, 2)}<span>:</span>{padZero(
+          deviceTime[1] ?? 0,
+          2
+        )}
+        <div class="time-select" slot="tools">
+          <label for="deviceTime">选择时间</label>
+          <input id="deviceTime" type="time" bind:value={deviceTimeValue} />
+        </div>
+      </Hover>
+    </div>
+    <div class="right">
+      <div class="signal">
+        <div class="hover">
+          <Hover>
+            <div class="main">
+              {#each Array(4) as _, i (i)}
+                <span class:weak={signalMainValue < i + 1} />
+              {/each}
+            </div>
+            <div class="sub">
+              {#each Array(4) as _, i (i)}
+                <span class:weak={signalSubValue < i + 1} />
+              {/each}
+            </div>
+            <div class="progress" slot="tools">
+              <div class="line">
+                <label for="mainSignal">主信号</label>
+                <input
+                  type="range"
+                  step="1"
+                  min="0"
+                  max="4"
+                  id="mainSignal"
+                  bind:value={signalMainValue}
+                />
+              </div>
+              <div class="line">
+                <label for="subSignal">副信号</label>
+                <input
+                  type="range"
+                  step="1"
+                  min="0"
+                  max="4"
+                  id="subSignal"
+                  bind:value={signalSubValue}
+                />
+              </div>
+            </div>
+          </Hover>
+        </div>
+      </div>
+      <div class="signal-type">
+        <Hover>
+          <div class="text">{signalType}</div>
+          <div class="select" slot="tools">
+            <label for="signalType"> 信号类型 </label>
+            <select id="signalType" bind:value={signalType}>
+              {#each signalTypes as type (type)}
+                <option value={type}>{type}</option>
+              {/each}
+            </select>
+          </div>
+        </Hover>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+  @font-face {
+    font-family: "pfcn";
+    src: url("pingfangcn.ttf");
+  }
+  .wechat {
+    width: 828px;
+    height: 1792px;
+    margin: 0 auto;
+    background-color: rgb(237, 237, 237);
+    transform-origin: top center;
+    font-size: 24px;
+    font-family: "pfcn";
+    .ios_status_bar {
+      display: flex;
+      align-items: center;
+      height: 95px;
+    }
+    label {
+      font-size: 14px;
+      white-space: nowrap;
+      margin-right: 10px;
+    }
+    .time {
+      margin-left: 62px;
+      display: flex;
+      align-items: center;
+      span {
+        vertical-align: top;
+        font-size: 20px;
+        margin: 0 1px;
+      }
+      .time-select {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .right {
+      margin-left: auto;
+      margin-right: 34px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .signal {
+      .main,
+      .sub {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 35px;
+      }
+      .main {
+        span {
+          height: 17px;
+          @for $i from 1 through 4 {
+            &:nth-child(#{$i}) {
+              height: #{17 - (4 - $i) * 2}px;
+            }
+          }
+        }
+      }
+      .sub {
+        margin-top: 3px;
+        span {
+          height: 7px;
+        }
+      }
+      span {
+        display: block;
+        width: 6px;
+        border-radius: 2.5px;
+        background-color: #010101;
+        &.weak {
+          background-color: #bdbdbd;
+        }
+      }
+    }
+  }
+</style>
