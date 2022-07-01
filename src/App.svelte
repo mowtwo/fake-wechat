@@ -17,7 +17,7 @@
     width: 828px;
     height: 1792px;
     margin: 0 auto;
-    background-color: rgb(237, 237, 237);
+    background-color: #ededed;
     transform-origin: top center;
     font-size: 24px;
     font-family: "pfcn", "system-ui", "-apple-system";
