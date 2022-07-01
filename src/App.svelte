@@ -8,17 +8,27 @@
 
   const onSave = async () => {
     try {
-      const blob = await Dom2Image.toBlob(WechatNode);
+      const blob = await Dom2Image.toBlob(WechatNode, {
+        filter(node) {
+          if (node instanceof HTMLElement) {
+            return !node.classList.contains("tools");
+          }
+          return true;
+        },
+      });
       saveAs(blob, `faker-wechat-${Date.now()}.png`);
-    } catch {
+    } catch (e) {
+      console.log(e);
       alert("保存失败");
     }
   };
 </script>
 
-<div class="wechat" bind:this={WechatNode}>
-  <StatusBar />
-  <TitleBar />
+<div class="wechat">
+  <div class="wrapper" bind:this={WechatNode}>
+    <StatusBar />
+    <TitleBar />
+  </div>
 </div>
 
 <button class="save" on:click={onSave}>save</button>
@@ -31,16 +41,27 @@
 
   .save {
     position: fixed;
-    top: 0;
-    left: 0;
+    bottom: 50px;
+    right: 50px;
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    border: none;
+    background-color: rgb(97, 144, 187);
+    color: #fff;
+    font-size: 30px;
+    cursor: pointer;
+    outline: auto;
   }
   .wechat {
     width: 828px;
     height: 1792px;
-    /* margin: 0 auto; */
-    background-color: #ededed;
-    transform-origin: top center;
+    margin: 0 auto;
     font-size: 24px;
     font-family: "pfcn", "system-ui", "-apple-system";
+    .wrapper {
+      height: 100%;
+      background-color: #ededed;
+    }
   }
 </style>
