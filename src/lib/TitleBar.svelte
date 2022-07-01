@@ -32,6 +32,7 @@
     .text {
       text-align: center;
       line-height: 90px;
+      white-space: nowrap;
     }
     .return,
     .more {
