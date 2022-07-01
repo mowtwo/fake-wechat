@@ -23,6 +23,8 @@
   .hover {
     position: relative;
     display: inline-block;
+    z-index: 10;
+    line-height: 1;
     &:hover {
       .mask {
         opacity: 1;
