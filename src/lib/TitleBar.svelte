@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Hover from "../components/Hover.svelte";
-  import LeftPng from "../assets/ios-arrow-left.png";
-  import MorePng from "../assets/more.png";
+  import Hover from '../components/Hover.svelte'
+  import LeftPng from '../assets/ios-arrow-left.png'
+  import MorePng from '../assets/more.png'
 
-  let title = "厦门先遣队(13)";
+  let title = '厦门先遣队(13)'
 </script>
 
 <div class="titlebar">
@@ -34,6 +34,7 @@
       line-height: 90px;
       white-space: nowrap;
       font-weight: bold;
+      font-size: 32px;
     }
     .return,
     .more {

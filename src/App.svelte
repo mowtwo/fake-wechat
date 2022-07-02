@@ -1,6 +1,7 @@
 <script lang="ts">
   import StatusBar from "./lib/StatusBar.svelte";
   import TitleBar from "./lib/TitleBar.svelte";
+  import BottomBar from "./lib/BottomBar.svelte";
   import Dom2Image from "dom-to-image";
   import { saveAs } from "file-saver";
 
@@ -28,6 +29,7 @@
   <div class="wrapper" bind:this={WechatNode}>
     <StatusBar />
     <TitleBar />
+    <BottomBar />
   </div>
 </div>
 
@@ -62,6 +64,7 @@
     .wrapper {
       height: 100%;
       background-color: #ededed;
+      position: relative;
     }
   }
 </style>
