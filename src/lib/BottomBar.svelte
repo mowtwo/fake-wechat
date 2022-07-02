@@ -19,8 +19,7 @@
     min-height: 160px;
     background: #f6f6f6;
     border-top: 1px solid #f5f5f5;
-    position: absolute;
-    bottom: 0;
+    position: relative;
 
     .bottom {
       box-sizing: border-box;
