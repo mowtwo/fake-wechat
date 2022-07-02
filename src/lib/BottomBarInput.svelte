@@ -1,5 +1,26 @@
+<script lang="ts">
+  import { addChat } from './Chat/store'
+
+  let value: string = ''
+
+  const add = (message: string) => {
+    addChat({
+      type: 'other',
+      message,
+      id: `${Date.now()}`,
+    })
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === 'Enter') {
+      add(value)
+      value = ''
+    }
+  }
+</script>
+
 <div class="bottombar_input">
-  <input class="input" />
+  <input class="input" bind:value on:keydown={handleKeyDown} />
 </div>
 
 <style lang="scss">

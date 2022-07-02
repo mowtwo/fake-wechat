@@ -2,6 +2,7 @@
   import StatusBar from "./lib/StatusBar.svelte";
   import TitleBar from "./lib/TitleBar.svelte";
   import BottomBar from "./lib/BottomBar.svelte";
+  import ChatBar from './lib/Chat/Container.svelte'
   import Dom2Image from "dom-to-image";
   import { saveAs } from "file-saver";
 
@@ -27,9 +28,14 @@
 
 <div class="wechat">
   <div class="wrapper" bind:this={WechatNode}>
-    <StatusBar />
-    <TitleBar />
-    <BottomBar />
+    <div class="title">
+      <StatusBar />
+      <TitleBar />
+    </div>
+    <div class="wrapper-content">
+      <ChatBar />
+      <BottomBar />
+    </div>
   </div>
 </div>
 
@@ -65,6 +71,18 @@
       height: 100%;
       background-color: #ededed;
       position: relative;
+      .title {
+        display: absolute;
+        left: 0;
+        top: 0;
+      }
+      .wrapper-content {
+        display: flex;
+        flex-direction: column;
+        // 减去上面的内容
+        height: calc(100% - 95px - 91px);
+        justify-content: flex-end;
+      }
     }
   }
 </style>
