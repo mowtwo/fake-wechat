@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Icon from './ToolsBarIcon.svelte'
-  import Input from './ToolsBarInput.svelte'
+  import Icon from './BottomBarIcon.svelte'
+  import Input from './BottomBarInput.svelte'
 </script>
 
-<div class="ios_toolsbar">
+<div class="ios_bottombar">
   <div class="home_indicator" />
-  <div class="tools">
+  <div class="bottom">
     <Icon type="asr" />
     <Input />
     <Icon type="emoji" />
@@ -14,24 +14,24 @@
 </div>
 
 <style lang="scss">
-  .ios_toolsbar {
+  .ios_bottombar {
     width: 100%;
-    height: 160px;
+    min-height: 160px;
     background: #f6f6f6;
     border-top: 1px solid #f5f5f5;
     position: absolute;
     bottom: 0;
 
-    .tools {
+    .bottom {
       box-sizing: border-box;
-      padding: 20px 30px 80px;
+      padding: 10px 20px 80px;
       display: flex;
       justify-content: flex-start;
       align-items: center;
       gap: 26px;
     }
     .home_indicator {
-      width: 50%;
+      width: 30%;
       height: 10px;
       background: #000;
       position: absolute;

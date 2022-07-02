@@ -28,8 +28,8 @@
 
 <style lang="scss">
   .icon-container {
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     .asr {
       width: 70%;
       height: 70%;
