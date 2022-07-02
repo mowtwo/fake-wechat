@@ -5,7 +5,7 @@ export const chatData = writable<ChatData[]>([])
 
 export const addChat = (chat: ChatData) => { 
     chatData.update(data => {
-        data.unshift(chat);
+        data.push(chat);
         return data
     })
 }

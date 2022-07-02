@@ -1,22 +1,62 @@
 <script lang="ts">
-  import Chat from './Chat.svelte'
-  import { chatData } from './store'
+  import { tick } from "svelte";
+
+  import { derived } from "svelte/store";
+
+  import Chat from "./Chat.svelte";
+  import { chatData } from "./store";
+
+  let scrollThis: HTMLDivElement;
+  let wrapperThis: HTMLDivElement;
+  const hookUpdateChatData = derived(chatData, (data) => {
+    tick().then(() => {
+      scrollThis?.scrollTo?.({
+        behavior: "smooth",
+        top: wrapperThis?.clientHeight ?? 0,
+      });
+    });
+    return data;
+  });
 </script>
 
 <div class="chatbar">
-  {#each $chatData as item (item.id)}
-    <Chat {...item} />
-  {/each}
+  <div class="scroll" bind:this={scrollThis}>
+    <div class="wrapper" bind:this={wrapperThis}>
+      {#each $hookUpdateChatData as { type, message, id } (id)}
+        <Chat {type} {message} />
+      {/each}
+    </div>
+  </div>
 </div>
 
 <style lang="scss">
   .chatbar {
     width: 100%;
-    padding: 0 30px 20px 30px;
-    box-sizing: border-box;
     height: 100%;
     overflow: hidden;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    .scroll {
+      margin-top: auto;
+      margin-right: 5px;
+      max-height: 100%;
+      overflow-y: auto;
+      &:hover {
+        &::-webkit-scrollbar {
+          width: 5px;
+        }
+      }
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #767676;
+        border-radius: 5px;
+      }
+      .wrapper {
+        padding: 0 20px 20px 30px;
+        box-sizing: border-box;
+      }
+    }
   }
 </style>
