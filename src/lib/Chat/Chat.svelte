@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { ChatData, ChatType } from './types'
+  import { fly } from 'svelte/transition'
+  import type { ChatData } from './types'
   import Avatar from './Avatar.svelte'
   import Message from './Message.svelte'
 
@@ -7,7 +8,10 @@
   export let message: ChatData['message']
 </script>
 
-<div class="chat {type === 'me' ? 'me' : 'other'}">
+<div
+  class="chat {type === 'me' ? 'me' : 'other'}"
+  transition:fly={{ y: 100, duration: 300 }}
+>
   {#if type === 'me'}<Message {type} {message} /> {/if}
   <Avatar />
   {#if type === 'other'}<Message {type} {message} /> {/if}
@@ -17,6 +21,7 @@
   .chat {
     display: flex;
     margin-top: 20px;
+    width: 100%;
     &.me {
       justify-content: flex-end;
     }
