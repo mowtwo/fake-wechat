@@ -2,13 +2,25 @@
   import StatusBar from "./lib/StatusBar.svelte";
   import TitleBar from "./lib/TitleBar.svelte";
   import BottomBar from "./lib/BottomBar.svelte";
-  import ChatBar from './lib/Chat/Container.svelte'
+  import ChatBar from "./lib/Chat/Container.svelte";
   import Dom2Image from "dom-to-image";
   import { saveAs } from "file-saver";
+  import { chatData } from "./lib/Chat/store";
+  import { tick } from "svelte";
+  import Hover from "./components/Hover.svelte";
 
   let WechatNode: HTMLDivElement;
+  let maxSaveChatLines = 10;
 
   const onSave = async () => {
+    const saveChatData = $chatData;
+    chatData.set(
+      saveChatData.slice(
+        saveChatData.length - maxSaveChatLines,
+        saveChatData.length
+      )
+    );
+    await tick();
     try {
       const blob = await Dom2Image.toBlob(WechatNode, {
         filter(node) {
@@ -22,6 +34,8 @@
     } catch (e) {
       console.log(e);
       alert("保存失败");
+    } finally {
+      chatData.set(saveChatData);
     }
   };
 </script>
@@ -39,7 +53,20 @@
   </div>
 </div>
 
-<button class="save" on:click={onSave}>save</button>
+<div class="save">
+  <Hover outline={false} toolsPosition="left">
+    <div class="text">save</div>
+    <div class="config" slot="tools">
+      <div class="tip">
+        由于某些功能缺陷，截图只能截图最顶部，所以请适当调节消息的行数
+      </div>
+      <label for="saveLines"> 截图信息行数 </label>
+      <input type="number" min="0" step="1" bind:value={maxSaveChatLines} />
+      <br />
+      <button on:click={onSave}>确定</button>
+    </div>
+  </Hover>
+</div>
 
 <style lang="scss">
   @font-face {
@@ -51,15 +78,25 @@
     position: fixed;
     bottom: 50px;
     right: 50px;
-    width: 120px;
-    height: 120px;
-    border-radius: 60px;
-    border: none;
-    background-color: rgb(97, 144, 187);
-    color: #fff;
-    font-size: 30px;
-    cursor: pointer;
-    outline: auto;
+    .text {
+      width: 120px;
+      height: 120px;
+      border-radius: 60px;
+      border: none;
+      background-color: rgb(97, 144, 187);
+      color: #fff;
+      font-size: 30px;
+      line-height: 120px;
+      text-align: center;
+    }
+    .config {
+      text-align: center;
+      .tip {
+        text-align: left;
+        font-size: 12px;
+        color: #aaa;
+      }
+    }
   }
   .wechat {
     width: 828px;

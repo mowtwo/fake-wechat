@@ -5,14 +5,16 @@
 
   import Chat from "./Chat.svelte";
   import { chatData } from "./store";
+  export let scrollHeight = 0;
 
   let scrollThis: HTMLDivElement;
   let wrapperThis: HTMLDivElement;
   const hookUpdateChatData = derived(chatData, (data) => {
     tick().then(() => {
+      scrollHeight = wrapperThis?.clientHeight ?? 0;
       scrollThis?.scrollTo?.({
         behavior: "smooth",
-        top: wrapperThis?.clientHeight ?? 0,
+        top: scrollHeight,
       });
     });
     return data;

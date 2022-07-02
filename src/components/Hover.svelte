@@ -1,16 +1,19 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
 
+  export let outline = true;
+  export let toolsPosition: "top" | "left" | "bottom" | "right" = "bottom";
+
   let show = false;
 </script>
 
-<div class="hover" on:click={() => (show = true)}>
+<div class="hover" class:outline on:click={() => (show = true)}>
   <div class="default">
     <slot />
   </div>
   <div class="mask" />
   {#if show}
-    <div class="tools" transition:fade={{ duration: 300 }}>
+    <div class="tools pos-{toolsPosition}" transition:fade={{ duration: 300 }}>
       <slot name="tools" />
       <div class="close" on:click|stopPropagation={() => (show = false)}>
         关闭
@@ -25,7 +28,7 @@
     display: inline-block;
     z-index: 10;
     line-height: 1;
-    &:hover {
+    &.outline:hover {
       .mask {
         opacity: 1;
       }
@@ -45,14 +48,31 @@
     }
     .tools {
       position: absolute;
-      top: calc(100% + 15px);
-      left: 50%;
-      transform: translateX(-50%);
       box-sizing: border-box;
       background-color: #fff;
       border-radius: 8px;
       padding: 10px 14px 20px;
       box-shadow: rgba($color: #000000, $alpha: 0.2) 0 0 4px;
+      &.pos-top {
+        bottom: calc(100% + 15px);
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &.pos-bottom {
+        top: calc(100% + 15px);
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &.pos-left {
+        right: calc(100% + 15px);
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      &.pos-right {
+        left: calc(100% + 15px);
+        top: 50%;
+        transform: translateY(-50%);
+      }
       .close {
         position: absolute;
         font-size: 12px;
@@ -65,6 +85,7 @@
         left: 50%;
         transform: translateX(-50%);
         cursor: pointer;
+        white-space: nowrap;
       }
     }
   }
